@@ -159,7 +159,7 @@ function App() {
     const determineParagraphEdit = (docId, docData) => {
         docKey = docId;
         if (!docData['Introduction Paragraph Text']) {
-            setMessage("Welcome " + username + "! New Story!");
+            setMessage("Welcome " + username + "! Time for a new story!");
             setEditText("Start the story!")
             key = 1;
         } else if (!docData['Body Paragraph Text']) {
@@ -241,8 +241,12 @@ function App() {
         <div>
             <p>{message}</p>
             <textarea value={editText} onChange={(e) => setEditText(e.target.value)}/>
-            <button onClick={handleEditSubmit}>Submit</button>
-            <a href={`/paststory/${uid}`}>Your Past Stories</a>
+            <div>
+                <button onClick={handleEditSubmit}>Submit</button>
+            </div>
+            <div>
+                <a href={`/paststory/${uid}`}>Your Past Stories</a>
+            </div>
         </div>
     );
 
