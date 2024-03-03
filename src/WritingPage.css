@@ -1,7 +1,15 @@
-/* WritingPage.css */
-body {
+
+/* Import a Google Font for storytelling */
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap');
+
+/* Import Bahnschrift font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Bahnschrift&display=swap');
+
+/* Global background styles */
+.global-background {
     margin: 0;
     padding: 0;
+    width: max-content;
     background-image: url('https://i.ibb.co/hscPnFN/Untitled-design-5.png');
     background-size: cover;
     background-position: center;
@@ -11,31 +19,30 @@ body {
     height: 100vh; /* Set the height of the body to fill the viewport */
 }
 
-
-/* Import a Google Font for storytelling */
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap');
-
 /* Style for the main container */
 .container {
-    max-width: 300px;
-    padding: 20px;
-    font-family: 'EB Garamond', serif; /* Applying the font */
+    max-width: 600px;
+    max-height: 400px;
+    padding: 500px; /* Applying the font */
     display: flex;
     justify-content: center;
     flex-direction: column;
 }
 
-/* Other styles remain the same */
+/* Textarea style */
 textarea {
-    width: 100%;
+    width: 90%;
     padding: 10px;
+    height: 75px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-family: 'EB Garamond', serif; /* Applying the font */
+    font-family: 'EB Garamond', serif; /* Applying the EB Garamond font */
     font-size: 16px;
+    align-self: center;
 }
 
+/* Button style */
 button {
     padding: 10px 20px;
     background-color: #007bff;
@@ -43,18 +50,25 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-family: 'EB Garamond', serif; /* Applying the font */
+    font-family: 'Bahnschrift', sans-serif; /* Applying the Bahnschrift font */
     font-size: 16px;
 }
 
+/* Link style */
 a {
-    color: #007bff;
+    color: midnightblue;
     text-decoration: none;
-    font-family: 'EB Garamond', serif; /* Applying the font */
+    font-family: 'Bahnschrift', sans-serif;
     font-size: 16px;
+    align-self: center;
+    text-decoration: underline; /* Add underline */
+
 }
 
+/* Paragraph style */
 p {
-    font-family: 'EB Garamond', serif; /* Applying the font */
+    font-family: 'Bahnschrift', sans-serif;
     font-size: 16px;
+    text-align: center;
+    align-self: center;
 }

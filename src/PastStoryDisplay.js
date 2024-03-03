@@ -54,19 +54,22 @@ function App() {
 
     // Return statement within the main function
     return (
-        <div className="your-story">
-            <h1>Your Story</h1>
-            {documentData ? (
-                <div>
-                    <p>Introduction: {documentData["Introduction Paragraph Text"]}</p>
-                    <p>Body: {documentData["Body Paragraph Text"]}</p>
-                    <p>Conclusion: {documentData["Conclusion Paragraph Text"]}</p>
-                    {/* Add more fields as needed */}
-                </div>
-            ) : (
-                <p>Loading...</p>
-            )}
+        <div className="global-background">
+            <div className="your-story">
+                <h1>Your Story</h1>
+                {documentData ? (
+                    <div>
+                        <p>Introduction: {documentData["Introduction Paragraph Text"]}</p>
+                        <p>Body: {documentData["Body Paragraph Text"]}</p>
+                        <p>Conclusion: {documentData["Conclusion Paragraph Text"]}</p>
+                        {/* Add more fields as needed */}
+                    </div>
+                ) : (
+                    <p>Loading...</p>
+                )}
+            </div>
         </div>
+
     );
 }
 

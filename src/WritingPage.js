@@ -1,7 +1,6 @@
 import './WritingPage.css';
 import React, { useState, useEffect } from 'react';
 import { initializeApp } from 'firebase/app';
-import './WritingPage.css'
 import {
     getFirestore,
     collection,
@@ -14,6 +13,7 @@ import {
     getDoc
 } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import ImageButton from './ImageButton';
 
 var key = 0;
 var docKey = null;
@@ -252,16 +252,18 @@ function App() {
 
 
     return (
-        <div className="container">
-            <p>{message}</p>
-            <textarea value={editText} onChange={(e) => setEditText(e.target.value)} style={{marginBottom: '10px'}}/>
-            <div style={{marginBottom: '10px'}}>
-                <button onClick={handleEditSubmit}>Submit</button>
-            </div>
-            <div>
-                <a href={`/paststory/${uid}`}>Your Past Stories</a>
+        <div className="global-background">
+            <div className="container">
+                <p>{message}</p>
+                <textarea value={editText} onChange={(e) => setEditText(e.target.value)}
+                          style={{marginBottom: '10px'}}/>
+                <div style={{marginBottom: '10px'}}>
+                    <ImageButton imageUrl="https://i.ibb.co/wg7NcLz/skeeyee-removebg-preview.png" onClick={handleEditSubmit} text="Submit" />
+                </div>
+                    <a href={`/paststory/${uid}`}>Your Past Stories</a>
             </div>
         </div>
+
     );
 
 

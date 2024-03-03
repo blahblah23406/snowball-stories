@@ -45,22 +45,29 @@ const CollectionDocuments = () => {
     }, [userId]); // Include userId in the dependency array
 
     return (
-        <div className="document-collection">
-            <h1>Collection Documents</h1>
-            <div className="document-list">
-                {documents.length > 0 ? (
-                    documents.map((doc, index) => (
-                        <div key={index} className="document-item">
-                            <h2>Story {doc.id}</h2>
-                            {/* Display other fields here */}
-                            <a href={`/paststoryviewer/${doc.id}`}>View Story</a>
-                        </div>
-                    ))
-                ) : (
-                    <p>No documents found for user ID: {userId}</p>
-                )}
+        <div className="global-background">
+            <div className="document-collection">
+                <h1>Collection Documents</h1>
+                <div className="document-list">
+                    {documents.length > 0 ? (
+                        documents.map((doc, index) => (
+                            <div key={index} className="document-item">
+                                <h2>Story {doc.id}</h2>
+                                {/* Display other fields here */}
+                                <a href={`/paststoryviewer/${doc.id}`}>View Story</a>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No documents found for user ID: {userId}</p>
+                    )}
+
+
+
+                </div>
+
             </div>
         </div>
+
     );
 };
 

@@ -1,0 +1,32 @@
+/* styles.css */
+
+.image-button {
+    position: relative;
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+
+.image-button img {
+    width: 40%;
+    height: auto;
+}
+
+.button-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: midnightblue;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: Bahnschrift;
+    z-index: 1;
+
+}
+

@@ -1,9 +1,23 @@
 /* DocumentCollection.css */
 
+/* Global background styles */
+.global-background {
+    margin: 0;
+    padding: 0;
+    width: max-content;
+    background-image: url('https://i.ibb.co/hscPnFN/Untitled-design-5.png');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Set the height of the body to fill the viewport */
+}
+
 .document-collection {
     height: 400px;
     overflow: auto;
-    padding: 10px; /* Reduce padding */
+    padding: 300px; /* Reduce padding */
 }
 
 .document-collection h1 {
@@ -13,13 +27,15 @@
 
 .document-list {
     display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Create 3 columns with equal width */
     grid-gap: 10px; /* Reduce grid gap */
 }
 
 .document-item {
-    background-color: #f9f9f9;
+    background-color: #b2b0e5;
     padding: 15px; /* Reduce padding */
     border-radius: 8px;
+    text-align: center; /* Center content */
 }
 
 .document-item h2 {
@@ -28,8 +44,10 @@
 }
 
 .document-item a {
-    color: #007bff;
-    text-decoration: none;
+    color: midnightblue;
+    text-decoration: none; /* Add underline */
+
+
 }
 
 .document-item a:hover {
