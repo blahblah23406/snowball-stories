@@ -47,7 +47,7 @@ const CollectionDocuments = () => {
     return (
         <div className="global-background">
             <div className="document-collection">
-                <h1>Collection Documents</h1>
+                <h1>Past Stories</h1>
                 <div className="document-list">
                     {documents.length > 0 ? (
                         documents.map((doc, index) => (
