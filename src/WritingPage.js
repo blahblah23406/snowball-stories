@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import PastStory from './PastStory.js'; // Import your UserDocumentPage component
 import { initializeApp } from 'firebase/app';
 import {
     getFirestore,
@@ -11,8 +9,6 @@ import {
     updateDoc,
     doc,
     setDoc,
-    orderBy,
-    limit,
     getDoc
 } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
@@ -20,6 +16,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 var key = 0;
 var docKey = null;
 var uid = null;
+var username = null;
 
 // Initialize Firebase with your Firebase configuration
 initializeApp({
@@ -45,6 +42,7 @@ function App() {
                 setCurrentUser({uid: user.uid, displayName: user.displayName || "No username available"});
                 setMessage('Loading document...');
                 uid = user.uid;
+                username = user.displayName;
                 findOrCreateDocument(user.uid);
             } else {
                 setCurrentUser(null);
@@ -143,9 +141,6 @@ function App() {
 
             const newDocumentId = newDocumentRef.id; // Get the new document ID
             determineParagraphEdit(newDocumentId, 'Introduction Paragraph Text');
-
-            setMessage("You're starting a new story!");
-            setEditText("Write Introduction Paragraph");
             setLoading(false);
         } catch (error) {
             setMessage(`Error creating new document: ${error.message}`);
@@ -164,15 +159,15 @@ function App() {
     const determineParagraphEdit = (docId, docData) => {
         docKey = docId;
         if (!docData['Introduction Paragraph Text']) {
-            setMessage("New Story!");
+            setMessage("Welcome " + username + "! New Story!");
             setEditText("Start the story!")
             key = 1;
         } else if (!docData['Body Paragraph Text']) {
-            setMessage("Introduction Paragraph: " + docData['Introduction Paragraph Text']);
+            setMessage("Welcome " + username + "! The current progress of the story is: " + docData['Introduction Paragraph Text']);
             setEditText("Continue the story!")
             key = 2;
         } else if (!docData['Conclusion Paragraph Text']) {
-            setMessage("Introduction & Body  Paragraph: " + docData['Introduction Paragraph Text'] + " " + docData['Body Paragraph Text']);
+            setMessage("Welcome " + username + "! The current progress of the story is: " + docData['Introduction Paragraph Text'] + " " + docData['Body Paragraph Text']);
             setEditText("Finish the story!")
             key = 3;
         }

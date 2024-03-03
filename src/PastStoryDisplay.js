@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { initializeApp } from 'firebase/app';
-import {getFirestore, doc, getDoc, collection, query, where, orderBy, limit, getDocs, addDoc} from 'firebase/firestore';
-import {getAuth, onAuthStateChanged} from "firebase/auth";
-import CollectionDocuments from "./PastStory";
+import {getFirestore, doc, getDoc} from 'firebase/firestore';
 import {useParams} from "react-router-dom"; // Import required for Firestore
 
 // Your Firebase configuration

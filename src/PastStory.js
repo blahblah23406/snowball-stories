@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs, getFirestore } from "firebase/firestore";
+import { collection, query, getDocs, getFirestore } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -41,11 +41,6 @@ const CollectionDocuments = () => {
 
         fetchCollectionDocuments();
     }, [userId]); // Include userId in the dependency array
-
-    const handleButtonClick = (storyId) => {
-        console.log("Story button clicked:", storyId);
-        // You can perform any action you want here when a story button is clicked
-    };
 
     return (
         <div style={{ height: "400px", overflow: "auto" }}>

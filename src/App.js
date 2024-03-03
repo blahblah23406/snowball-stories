@@ -1,5 +1,5 @@
 import './App.css';
-import {BrowserRouter as Router, Routes, Route, json} from 'react-router-dom';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import WritingPage from "./WritingPage";
 import PastStory from "./PastStory";
 import Login from './Login.js'
