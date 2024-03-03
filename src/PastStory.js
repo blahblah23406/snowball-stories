@@ -42,7 +42,7 @@ const CollectionDocuments = () => {
         };
 
         fetchCollectionDocuments();
-    }, [userId]); // Include userId in the dependency array
+    }, [userId]);
 
     return (
         <div className="global-background">
@@ -53,7 +53,6 @@ const CollectionDocuments = () => {
                         documents.map((doc, index) => (
                             <div key={index} className="document-item">
                                 <h2>Story {doc.id}</h2>
-                                {/* Display other fields here */}
                                 <a href={`/paststoryviewer/${doc.id}`}>View Story</a>
                             </div>
                         ))

@@ -2,9 +2,8 @@ import './PastStoryDisplay.css';
 import React, { useState, useEffect } from 'react';
 import { initializeApp } from 'firebase/app';
 import {getFirestore, doc, getDoc} from 'firebase/firestore';
-import {useParams} from "react-router-dom"; // Import required for Firestore
+import {useParams} from "react-router-dom";
 
-// Your Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyCZ9Eia_8WUjVwHeLO-2CwOSketMB_Cwhs",
     authDomain: "snowball-stories.firebaseapp.com",
@@ -23,7 +22,7 @@ initializeApp(firebaseConfig);
 const getDocumentData = async (documentId) => {
     console.log(documentId);
     const db = getFirestore(); // Get the Firestore database instance
-    const docRef = doc(db, "snowball-fight", documentId); // Adjust "your-collection-name" to your actual collection name
+    const docRef = doc(db, "snowball-fight", documentId);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -62,7 +61,6 @@ function App() {
                         <p>Introduction: {documentData["Introduction Paragraph Text"]}</p>
                         <p>Body: {documentData["Body Paragraph Text"]}</p>
                         <p>Conclusion: {documentData["Conclusion Paragraph Text"]}</p>
-                        {/* Add more fields as needed */}
                     </div>
                 ) : (
                     <p>Loading...</p>

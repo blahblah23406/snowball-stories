@@ -1,10 +1,10 @@
-/* YourStory.css */
+
 .global-background {
     margin: 0;
     padding: 0;
-    width: 1400px; /* Ensure full width */
-    height: 100vh; /* Set the height of the body to fill the viewport */
-    overflow: auto; /* Enable scrolling */
+    width: 1400px;
+    height: 100vh;
+    overflow: auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,11 +13,11 @@
 }
 .your-story {
     padding: 20px;
-    background-color: rgba(170, 154, 222, 0.14); /* Ensure there's no conflicting background color */
-    width: 40%; /* Constrain width */
-    height: 50vh; /* Constrain height */
+    background-color: rgba(170, 154, 222, 0.14);
+    width: 40%;
+    height: 50vh;
     border-radius: 8px;
-    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-y: auto;
 }
 
 .your-story h1 {
