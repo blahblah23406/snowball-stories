@@ -60,11 +60,6 @@ const CollectionDocuments = () => {
                     ) : (
                         <p>No documents found for user ID: {userId}</p>
                     )}
-                    <div className="document-item">
-                        <h2>Story</h2>
-                        {/* Display other fields here */}
-                        <a href={`/paststoryviewer/skkeeye`}>View Story</a>
-                    </div>
 
 
 
