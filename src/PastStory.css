@@ -15,9 +15,8 @@
 }
 
 .document-collection {
-    height: 400px;
-    overflow: auto;
-    padding: 300px; /* Reduce padding */
+    padding-right: 400px; /* Reduce padding */
+    padding-left: 400px;
 }
 
 .document-collection h1 {

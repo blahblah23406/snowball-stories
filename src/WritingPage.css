@@ -9,7 +9,7 @@
 .global-background {
     margin: 0;
     padding: 0;
-    width: max-content;
+    width: 1400px;
     background-image: url('https://i.ibb.co/hscPnFN/Untitled-design-5.png');
     background-size: cover;
     background-position: center;
@@ -19,21 +19,34 @@
     height: 100vh; /* Set the height of the body to fill the viewport */
 }
 
-/* Style for the main container */
-.container {
-    max-width: 600px;
-    max-height: 400px;
-    padding: 500px; /* Applying the font */
+.mega-container{
+    max-width: 1400px;
+    max-height: 800px;
     display: flex;
     justify-content: center;
     flex-direction: column;
+}
+
+/* Style for the main container */
+.container {
+    max-width: 600px;
+    max-height: 380px;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    flex-direction: column;
+    padding: 20px;
+    background-color: rgba(170, 154, 222, 0.14); /* Ensure there's no conflicting background color */
+
+    border-radius: 8px;
+    overflow-y: auto; /* Enable vertical scrolling */
 }
 
 /* Textarea style */
 textarea {
     width: 90%;
     padding: 10px;
-    height: 75px;
+    height: 100px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;

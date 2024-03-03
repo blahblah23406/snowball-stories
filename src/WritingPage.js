@@ -253,15 +253,20 @@ function App() {
 
     return (
         <div className="global-background">
-            <div className="container">
-                <p>{message}</p>
-                <textarea value={editText} onChange={(e) => setEditText(e.target.value)}
-                          style={{marginBottom: '10px'}}/>
-                <div style={{marginBottom: '10px'}}>
-                    <ImageButton imageUrl="https://i.ibb.co/wg7NcLz/skeeyee-removebg-preview.png" onClick={handleEditSubmit} text="Submit" />
+            <div className="mega-container">
+                <div className="container">
+                    <p>{message}</p>
+                    <textarea value={editText} onChange={(e) => setEditText(e.target.value)}
+                              style={{marginBottom: '10px'}}/>
                 </div>
-                    <a href={`/paststory/${uid}`}>Your Past Stories</a>
+                <div style={{marginBottom: '10px'}}>
+                    <ImageButton imageUrl="https://i.ibb.co/wg7NcLz/skeeyee-removebg-preview.png"
+                                 onClick={handleEditSubmit} text="Submit"/>
+                </div>
+                <a href={`/paststory/${uid}`}>Your Past Stories</a>
             </div>
+
+
         </div>
 
     );

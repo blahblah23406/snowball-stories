@@ -2,22 +2,20 @@
 .global-background {
     margin: 0;
     padding: 0;
-    width: 100%; /* Ensure full width */
+    width: 1400px; /* Ensure full width */
     height: 100vh; /* Set the height of the body to fill the viewport */
     overflow: auto; /* Enable scrolling */
     display: flex;
     justify-content: center;
     align-items: center;
     background-image: url('https://i.ibb.co/hscPnFN/Untitled-design-5.png');
-    background-size: cover;
     background-position: center;
 }
-
 .your-story {
     padding: 20px;
     background-color: rgba(170, 154, 222, 0.14); /* Ensure there's no conflicting background color */
-    max-width: 40%; /* Constrain width */
-    max-height: 50vh; /* Constrain height */
+    width: 40%; /* Constrain width */
+    height: 50vh; /* Constrain height */
     border-radius: 8px;
     overflow-y: auto; /* Enable vertical scrolling */
 }
