@@ -62,14 +62,18 @@ function App() {
 
             // Query to fetch documents with incomplete body paragraphs
             console.log('Querying for documents with incomplete body paragraphs...');
-            const bodyQ = query(snowballFightCollection, where("Body Paragraph Text", "==", ""));
+            const bodyQ = query(snowballFightCollection,
+                where("Body Paragraph Text", "==", "")
+                && where("Introduction Paragraph Text", "!=", ""));
             const bodySnapshot = await getDocs(bodyQ);
             console.log(bodyQ);
 
             // Query to fetch documents with incomplete conclusion paragraphs
             console.log('Querying for documents with incomplete conclusion paragraphs...');
-            const conclusionQ = query(snowballFightCollection, where("Conclusion Paragraph Text", "==", ""));
-            const conclusionSnapshot = await getDocs(conclusionQ);
+            const conclusionQ = query(snowballFightCollection,
+                where("Conclusion  Paragraph Text", "==", "")
+                && where("Introduction Paragraph Text", "!=", "")
+                && where("Body Paragraph Text", "!=", ""));            const conclusionSnapshot = await getDocs(conclusionQ);
             console.log(conclusionQ);
 
             // Combine both snapshots into a single array
