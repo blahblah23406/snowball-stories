@@ -1,7 +1,9 @@
+import './PastStory.css';
 import { collection, query, getDocs, getFirestore } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyCZ9Eia_8WUjVwHeLO-2CwOSketMB_Cwhs",
@@ -43,21 +45,21 @@ const CollectionDocuments = () => {
     }, [userId]); // Include userId in the dependency array
 
     return (
-        <div style={{ height: "400px", overflow: "auto" }}>
+        <div className="document-collection">
             <h1>Collection Documents</h1>
-            {documents.length > 0 ? (
-                <div>
-                    {documents.map((doc, index) => (
-                        <div key={index}>
+            <div className="document-list">
+                {documents.length > 0 ? (
+                    documents.map((doc, index) => (
+                        <div key={index} className="document-item">
                             <h2>Story {doc.id}</h2>
                             {/* Display other fields here */}
                             <a href={`/paststoryviewer/${doc.id}`}>View Story</a>
                         </div>
-                    ))}
-                </div>
-            ) : (
-                <p>No documents found for user ID: {userId}</p>
-            )}
+                    ))
+                ) : (
+                    <p>No documents found for user ID: {userId}</p>
+                )}
+            </div>
         </div>
     );
 };

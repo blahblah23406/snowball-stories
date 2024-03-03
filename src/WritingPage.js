@@ -1,3 +1,4 @@
+import './WritingPage.css';
 import React, { useState, useEffect } from 'react';
 import { initializeApp } from 'firebase/app';
 import {
@@ -238,10 +239,10 @@ function App() {
 
 
     return (
-        <div>
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <p>{message}</p>
-            <textarea value={editText} onChange={(e) => setEditText(e.target.value)}/>
-            <div>
+            <textarea value={editText} onChange={(e) => setEditText(e.target.value)} style={{marginBottom: '10px'}}/>
+            <div style={{marginBottom: '10px'}}>
                 <button onClick={handleEditSubmit}>Submit</button>
             </div>
             <div>

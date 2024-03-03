@@ -1,3 +1,4 @@
+import './PastStoryDisplay.css';
 import React, { useState, useEffect } from 'react';
 import { initializeApp } from 'firebase/app';
 import {getFirestore, doc, getDoc} from 'firebase/firestore';
@@ -53,8 +54,7 @@ function App() {
 
     // Return statement within the main function
     return (
-        <div>
-            <p></p>
+        <div className="your-story">
             <h1>Your Story</h1>
             {documentData ? (
                 <div>

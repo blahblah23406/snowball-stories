@@ -1,0 +1,21 @@
+/* YourStory.css */
+
+.your-story {
+    padding: 20px;
+}
+
+.your-story h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.your-story div {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.your-story p {
+    font-size: 16px;
+    margin-bottom: 10px;
+}

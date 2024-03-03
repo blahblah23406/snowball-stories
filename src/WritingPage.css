@@ -1,30 +1,46 @@
-/* Styles for the main container */
-.main-container {
-    width: 80%; /* Adjust as needed */
-    margin: 0 auto; /* Center the container */
+/* WritingPage.css */
+
+/* Import a Google Font for storytelling */
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap');
+
+/* Style for the main container */
+.container {
+    max-width: 600px;
+    margin: 0 auto;
     padding: 20px;
+    font-family: 'EB Garamond', serif; /* Applying the font */
 }
 
-/* Styles for the box containing previous writing */
-.previous-writing-box {
-    background-color: #f0f0f0; /* Background color */
+/* Other styles remain the same */
+textarea {
+    width: 100%;
     padding: 10px;
-    margin-bottom: 20px; /* Space between previous writing box and text box */
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'EB Garamond', serif; /* Applying the font */
+    font-size: 16px;
 }
 
-/* Styles for the text box for writing */
-.text-box {
-    width: 100%; /* Take up full width */
-    padding: 10px;
-    border: 1px solid #ccc; /* Border color */
-    border-radius: 5px; /* Rounded corners */
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'EB Garamond', serif; /* Applying the font */
+    font-size: 16px;
 }
 
-/* Add more styles as needed */
+a {
+    color: #007bff;
+    text-decoration: none;
+    font-family: 'EB Garamond', serif; /* Applying the font */
+    font-size: 16px;
+}
 
-/* Optional: Styles for responsive design */
-@media screen and (max-width: 768px) {
-    .main-container {
-        width: 90%; /* Adjust width for smaller screens */
-    }
+p {
+    font-family: 'EB Garamond', serif; /* Applying the font */
+    font-size: 16px;
 }
