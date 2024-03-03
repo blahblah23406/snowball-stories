@@ -1,5 +1,3 @@
-// ImageButton.js
-
 import React from 'react';
 import './ImageButton.css'
 

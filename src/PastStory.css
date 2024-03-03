@@ -1,5 +1,3 @@
-/* DocumentCollection.css */
-
 /* Global background styles */
 .global-background {
     margin: 0;
@@ -11,11 +9,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Set the height of the body to fill the viewport */
+    height: 100vh;
 }
 
 .document-collection {
-    padding-right: 400px; /* Reduce padding */
+    padding-right: 400px;
     padding-left: 400px;
 }
 
@@ -26,15 +24,15 @@
 
 .document-list {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Create 3 columns with equal width */
-    grid-gap: 10px; /* Reduce grid gap */
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
 }
 
 .document-item {
     background-color: #b2b0e5;
-    padding: 15px; /* Reduce padding */
+    padding: 15px;
     border-radius: 8px;
-    text-align: center; /* Center content */
+    text-align: center;
 }
 
 .document-item h2 {

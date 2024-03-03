@@ -49,9 +49,8 @@ function App() {
 
         // Call the function to fetch document data
         fetchDocumentData();
-    }, []); // Empty dependency array ensures the effect runs only once
+    }, []);
 
-    // Return statement within the main function
     return (
         <div className="global-background">
             <div className="your-story">

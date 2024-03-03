@@ -204,7 +204,7 @@ function App() {
             const db = getFirestore();
             const snowballFightCollection = collection(db, "snowball-fight");
 
-            // Create a valid Firestore document reference
+            // Create a Firestore document reference
             const docRef = doc(snowballFightCollection, docKey);
 
             // Fetch the document using the document reference
