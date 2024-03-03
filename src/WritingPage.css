@@ -5,10 +5,11 @@
 
 /* Style for the main container */
 .container {
-    max-width: 600px;
+    max-width: 300px;
     margin: 0 auto;
     padding: 20px;
     font-family: 'EB Garamond', serif; /* Applying the font */
+    display: flex;
 }
 
 /* Other styles remain the same */

@@ -5,7 +5,7 @@ const Snowflake = ({ left, top}) => {
     return (
         <img
             className="snowflake"
-            src="/snowflake-svgrepo-com%20(3).svg"
+            src="/snowflake-svgrepo-com_3.svg"
             alt="Snowflake"
             style={{left, top}}
         />
