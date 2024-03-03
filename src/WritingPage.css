@@ -1,0 +1,30 @@
+/* Styles for the main container */
+.main-container {
+    width: 80%; /* Adjust as needed */
+    margin: 0 auto; /* Center the container */
+    padding: 20px;
+}
+
+/* Styles for the box containing previous writing */
+.previous-writing-box {
+    background-color: #f0f0f0; /* Background color */
+    padding: 10px;
+    margin-bottom: 20px; /* Space between previous writing box and text box */
+}
+
+/* Styles for the text box for writing */
+.text-box {
+    width: 100%; /* Take up full width */
+    padding: 10px;
+    border: 1px solid #ccc; /* Border color */
+    border-radius: 5px; /* Rounded corners */
+}
+
+/* Add more styles as needed */
+
+/* Optional: Styles for responsive design */
+@media screen and (max-width: 768px) {
+    .main-container {
+        width: 90%; /* Adjust width for smaller screens */
+    }
+}

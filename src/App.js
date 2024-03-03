@@ -1,25 +1,27 @@
-import logo from './logo.svg';
 import './App.css';
+import {BrowserRouter as Router, Routes, Route, json} from 'react-router-dom';
+import WritingPage from "./WritingPage";
+import PastStory from "./PastStory";
+import Login from './Login.js'
+import PastStoryDisplay from './PastStoryDisplay.js'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    return (
+        <>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<Login/>}/>
+                    <Route path="/writingpage" element={<WritingPage/>}/>
+                    <Route path="/paststory/:uid" element={<PastStory/>}/>
+                    <Route path="/paststoryviewer/:documentId" element={<PastStoryDisplay/>}/>
+                </Routes>
+
+            </Router>
+            
+            
+        </>
+    );
 }
 
 export default App;

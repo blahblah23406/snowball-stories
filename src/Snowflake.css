@@ -1,0 +1,15 @@
+.snowflake {
+    position: absolute;
+    animation: fall 5s linear infinite;
+    width: 30px;
+    height: 30px;
+}
+
+@keyframes fall {
+    from {
+        transform: translateY(-100vh); /* Start position at the top of the screen */
+    }
+    to {
+        transform: translateY(100vh); /* End position at the bottom of the screen */
+    }
+}
