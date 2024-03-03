@@ -39,18 +39,16 @@ function Login() {
 
     useEffect(() => {
         const generateSnowflakes = () => {
-            const newSnowflakes = [...snowflakes];
+            const newSnowflakes = [];
             const screenWidth = window.innerWidth;
             const screenHeight = window.innerHeight;
 
-            // If there are fewer than 20 snowflakes, add more
+            // Generate new snowflakes
             while (newSnowflakes.length < 200) {
                 const left = `${Math.random() * screenWidth}px`;
                 const top = `${Math.random() * screenHeight}px`;
                 newSnowflakes.push({ left, top });
             }
-
-            // Update the state with the new snowflakes
             setSnowflakes(newSnowflakes);
         };
 
@@ -60,11 +58,11 @@ function Login() {
         // Add event listener to window for resizing
         window.addEventListener('resize', generateSnowflakes);
 
-        // Remove event listener on component unmount
+        // Clean up event listener on component unmount
         return () => {
             window.removeEventListener('resize', generateSnowflakes);
         };
-    }, [snowflakes]);
+    }, []);
 
     const handleClick = () => {
         console.log('Button clicked!');

@@ -1,13 +1,13 @@
 body {
     margin: 0;
     padding: 0;
-    background-image: url('https://i.ibb.co/ZW84htJ/Untitled-design-4.png'); /* Set background image */
+    background-image: url('https://i.ibb.co/ZW84htJ/Untitled-design-4.png');
     background-size: cover;
     background-position: center;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Set the height of the body to fill the viewport */
+    height: 100vh;
 }
 
 .widget {

@@ -1,6 +1,7 @@
 import './WritingPage.css';
 import React, { useState, useEffect } from 'react';
 import { initializeApp } from 'firebase/app';
+import './WritingPage.css'
 import {
     getFirestore,
     collection,
@@ -62,19 +63,24 @@ function App() {
 
             // Query to fetch documents with incomplete body paragraphs
             console.log('Querying for documents with incomplete body paragraphs...');
-            const bodyQ = query(snowballFightCollection,
-                where("Body Paragraph Text", "==", "")
-                && where("Introduction Paragraph Text", "!=", ""));
+            const bodyQ = query(
+                snowballFightCollection,
+                where("Body Paragraph Text", "==", ""),
+                where("Introduction Paragraph Text", "!=", ""),
+            );
             const bodySnapshot = await getDocs(bodyQ);
-            console.log(bodyQ);
+            console.log(bodySnapshot);
 
             // Query to fetch documents with incomplete conclusion paragraphs
             console.log('Querying for documents with incomplete conclusion paragraphs...');
-            const conclusionQ = query(snowballFightCollection,
-                where("Conclusion  Paragraph Text", "==", "")
-                && where("Introduction Paragraph Text", "!=", "")
-                && where("Body Paragraph Text", "!=", ""));            const conclusionSnapshot = await getDocs(conclusionQ);
-            console.log(conclusionQ);
+            const conclusionQ = query(
+                snowballFightCollection,
+                where("Conclusion Paragraph Text", "==", ""),
+                where("Body Paragraph Text", "!=", "")
+            );
+
+            const conclusionSnapshot = await getDocs(conclusionQ);
+            console.log(conclusionSnapshot);
 
             // Combine both snapshots into a single array
             const allSnapshots = [...bodySnapshot.docs, ...conclusionSnapshot.docs];
@@ -106,6 +112,7 @@ function App() {
                         userIntroData !== undefined &&
                         userBodyData !== undefined &&
                         userConcluData !== undefined &&
+                        doc.data()["Introduction Paragraph Text"] !== "" &&
                         !userIntroData.includes(userId) &&
                         !userBodyData.includes(userId) &&
                         !userConcluData.includes(userId)
@@ -154,6 +161,7 @@ function App() {
 
     const processExistingDocument = async (docId, docData, userId, collectionRef) => {
         try {
+            setMessage("bye")
             determineParagraphEdit(docId, docData);
         } catch (error) {
             setMessage(`Error processing existing document: ${error.message}`);
@@ -163,6 +171,7 @@ function App() {
 
     const determineParagraphEdit = (docId, docData) => {
         docKey = docId;
+        setMessage(docId);
         if (!docData['Introduction Paragraph Text']) {
             setMessage("Welcome " + username + "! Time for a new story!");
             setEditText("Start the story!")
@@ -243,7 +252,7 @@ function App() {
 
 
     return (
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <div className="container">
             <p>{message}</p>
             <textarea value={editText} onChange={(e) => setEditText(e.target.value)} style={{marginBottom: '10px'}}/>
             <div style={{marginBottom: '10px'}}>

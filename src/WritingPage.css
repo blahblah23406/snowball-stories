@@ -1,4 +1,16 @@
 /* WritingPage.css */
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('https://i.ibb.co/hscPnFN/Untitled-design-5.png');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Set the height of the body to fill the viewport */
+}
+
 
 /* Import a Google Font for storytelling */
 @import url('https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap');
@@ -6,10 +18,11 @@
 /* Style for the main container */
 .container {
     max-width: 300px;
-    margin: 0 auto;
     padding: 20px;
     font-family: 'EB Garamond', serif; /* Applying the font */
     display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
 /* Other styles remain the same */
