@@ -159,9 +159,6 @@ function App() {
 
                     // Check if the necessary properties exist and if the user is associated with the document
                     if (
-                        userIntroData !== undefined &&
-                        userBodyData !== undefined &&
-                        userConcluData !== undefined &&
                         introData !== undefined &&
                         !introData.includes("Taken")&&
                         !bodyData.includes("Taken") &&
