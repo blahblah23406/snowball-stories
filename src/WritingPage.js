@@ -69,7 +69,7 @@ function App() {
             } catch (error) {
                 console.error('Error handling visibility change:', error);
             }
-        } else if (document.visibilityState === 'shown') {
+        } else if (document.visibilityState === 'visible') {
             console.log("State happened");
             findOrCreateDocument(uid);
         }
