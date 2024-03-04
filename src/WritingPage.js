@@ -10,7 +10,8 @@ import {
     updateDoc,
     doc,
     setDoc,
-    getDoc
+    getDoc,
+    deleteDoc
 } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import ImageButton from './ImageButton';
