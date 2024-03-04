@@ -33,8 +33,8 @@ const CollectionDocuments = () => {
                     .filter(doc =>
                         doc["Introduction Paragraph Text User"] === userId ||
                         doc["Body Paragraph Text User"] === userId ||
-                        doc["Conclusion Paragraph Text User"] === userId
-                    );
+                        doc["Conclusion Paragraph Text User"] === userId)
+                    .sort((a, b) => a.createdAt - b.createdAt);
                 setDocuments(data);
             } catch (error) {
                 console.error("Error fetching collection documents:", error);
