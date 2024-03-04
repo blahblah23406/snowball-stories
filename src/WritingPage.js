@@ -14,6 +14,7 @@ import {
 } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import ImageButton from './ImageButton';
+import {wait} from "@testing-library/user-event/dist/utils";
 
 var key = 0;
 var docKey = null;
@@ -324,7 +325,7 @@ function App() {
 
             setMessage('Document updated successfully.');
 
-            window.location.reload();
+            await findOrCreateDocument(currentUser.uid);
         } catch (error) {
             setMessage(`Error updating document: ${error.message}`);
         }
