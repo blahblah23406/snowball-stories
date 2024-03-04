@@ -71,7 +71,6 @@ function App() {
                 console.error('Error handling visibility change:', error);
             }
         } else if (document.visibilityState === 'visible') {
-            console.log("State happened");
             findOrCreateDocument(uid);
         }
     };
@@ -98,26 +97,21 @@ function App() {
     };
 }, []);
     const findOrCreateDocument = async (userId) => {
-        console.log('Starting to find or create document...');
         try {
             const db = getFirestore();
             const snowballFightCollection = collection(db, "snowball-fight");
-            console.log('Firestore and collection initialized.');
 
             await deleteEmptyDocuments(snowballFightCollection);
 
             // Query to fetch documents with incomplete body paragraphs
-            console.log('Querying for documents with incomplete body paragraphs...');
             const bodyQ = query(
                 snowballFightCollection,
                 where("Body Paragraph Text", "==", ""),
                 where("Introduction Paragraph Text", "!=", ""),
             );
             const bodySnapshot = await getDocs(bodyQ);
-            console.log(bodySnapshot);
 
             // Query to fetch documents with incomplete conclusion paragraphs
-            console.log('Querying for documents with incomplete conclusion paragraphs...');
             const conclusionQ = query(
                 snowballFightCollection,
                 where("Conclusion Paragraph Text", "==", ""),
@@ -125,20 +119,16 @@ function App() {
             );
 
             const conclusionSnapshot = await getDocs(conclusionQ);
-            console.log(conclusionSnapshot);
 
             // Combine both snapshots into a single array
             const allSnapshots = [...bodySnapshot.docs, ...conclusionSnapshot.docs];
 
             if (allSnapshots.length === 0) {
-                console.log('No documents with incomplete paragraphs found, creating a new document...');
                 // Create a new document since there are no suitable existing documents
 
                 createdDoc = true;
-                console.log(createdDoc + " Hheheaw")
                 await createNewDocument(snowballFightCollection, userId);
             } else {
-                console.log('Found documents with incomplete paragraphs, processing...');
                 // Sort the combined array based on creation timestamp in ascending order
                 allSnapshots.sort((a, b) => a.data().createdAt - b.data().createdAt);
 
@@ -146,7 +136,6 @@ function App() {
 
                 // Iterate through the sorted array to find the earliest suitable document
                 for (const doc of allSnapshots) {
-                    console.log(doc.id);
 
                     // Check if the user is already associated with the document
                     const userIntroData = doc.data()["Introduction Paragraph Text User"];
@@ -156,7 +145,6 @@ function App() {
                     const bodyData = doc.data()["Body Paragraph Text"];
                     const concluData = doc.data()["Conclusion Paragraph Text"];
 
-                    console.log(doc.id + " " + userIntroData + " " + userBodyData + " " + userConcluData);
 
                     // Check if the necessary properties exist and if the user is associated with the document
                     if (
@@ -168,28 +156,23 @@ function App() {
                         !userBodyData.includes(userId) &&
                         !userConcluData.includes(userId)
                     ) {
-                        console.log('User not associated with document, selecting earliest suitable document...');
                         earliestSuitableDoc = doc;
                         break;
                     }
                 }
 
                 if (earliestSuitableDoc) {
-                    console.log('Processing earliest suitable document...');
                     await processExistingDocument(earliestSuitableDoc.id, earliestSuitableDoc.data(), userId, snowballFightCollection);
                 } else {
-                    console.log('All documents have user association, creating a new document...');
                     if(!createdDoc){
-                        console.log(createdDoc + " Hheheaw")
                         await createNewDocument(snowballFightCollection, userId);
                     } else {
                         createdDoc = false;
-                        console.log(createdDoc + " Hheheaw")
+                    
                     }
                 }
             }
         } catch (error) {
-            console.log(`Error in document retrieval or creation: ${error.message}`);
             setMessage(`Error in document retrieval or creation: ${error.message}`);
         }
     };
@@ -207,19 +190,17 @@ function App() {
 
         const deletePromises = emptyDocsSnapshot.docs.map(async (doc) => {
             await deleteDoc(doc.ref);
-            console.log(`Deleted empty document with ID: ${doc.id}`);
         });
 
         await Promise.all(deletePromises);
     } catch (error) {
-        console.log(`Error deleting empty documents: ${error.message}`);
+        
     }
 };
     
     const createNewDocument = async (collectionRef, userId) => {
         try {
             createdDoc = false;
-            console.log(createdDoc + " Hheheaw")
             const newDocumentRef = doc(collectionRef);
             await setDoc(newDocumentRef, {
                 'Introduction Paragraph Text': '',
@@ -290,7 +271,6 @@ function App() {
             key = 3;
         }
         setLoading(false);
-        console.log(key);
     };
 
 
