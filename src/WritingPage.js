@@ -41,21 +41,6 @@ function App() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const auth = getAuth();
-        onAuthStateChanged(auth, user => {
-            if (user) {
-                setCurrentUser({uid: user.uid, displayName: user.displayName || "No username available"});
-                setMessage('Loading document...');
-                uid = user.uid;
-                username = user.displayName;
-                findOrCreateDocument(user.uid);
-            } else {
-                setCurrentUser(null);
-                setMessage('Please log in.');
-                setLoading(false);
-            }
-        })
-
         const handleBeforeUnload = async (event) => {
             // Prevent the browser from closing immediately
             event.preventDefault();
@@ -96,6 +81,23 @@ function App() {
         return () => {
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
+
+        const auth = getAuth();
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                setCurrentUser({uid: user.uid, displayName: user.displayName || "No username available"});
+                setMessage('Loading document...');
+                uid = user.uid;
+                username = user.displayName;
+                findOrCreateDocument(user.uid);
+            } else {
+                setCurrentUser(null);
+                setMessage('Please log in.');
+                setLoading(false);
+            }
+        })
+
+
 
     }, []);
 
