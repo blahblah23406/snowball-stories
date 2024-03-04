@@ -151,6 +151,9 @@ function App() {
                     const userIntroData = doc.data()["Introduction Paragraph Text User"];
                     const userBodyData = doc.data()["Body Paragraph Text User"];
                     const userConcluData = doc.data()["Conclusion Paragraph Text User"];
+                    const introData = doc.data()["Introduction Paragraph Text"];
+                    const bodyData = doc.data()["Body Paragraph Text"];
+                    const concluData = doc.data()["Conclusion Paragraph Text"];
 
                     console.log(doc.id + " " + userIntroData + " " + userBodyData + " " + userConcluData);
 
@@ -159,10 +162,10 @@ function App() {
                         userIntroData !== undefined &&
                         userBodyData !== undefined &&
                         userConcluData !== undefined &&
-                        userIntroData !== "" &&
-                        userIntroData !== "Taken" &&
-                        userBodyData !== "Taken" &&
-                        userConcluData !== "Taken" &&
+                        !introData.includes("")&&
+                        !introData.includes("Taken")&&
+                        !bodyData.includes("Taken") &&
+                        !concluData.includes("Taken")&&
                         !userIntroData.includes(userId) &&
                         !userBodyData.includes(userId) &&
                         !userConcluData.includes(userId)
