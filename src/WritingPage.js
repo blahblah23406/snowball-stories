@@ -20,6 +20,7 @@ var docKey = null;
 var uid = null;
 var username = null;
 var docInfo = null;
+var createdDoc = false;
 
 // Initialize Firebase with your Firebase configuration
 initializeApp({
@@ -52,7 +53,7 @@ function App() {
                 setMessage('Please log in.');
                 setLoading(false);
             }
-        });
+        })
 
         const handleBeforeUnload = async (event) => {
             // Prevent the browser from closing immediately
@@ -64,30 +65,18 @@ function App() {
                 const snowballFightCollection = collection(db, "snowball-fight");
                 const docRef = doc(snowballFightCollection, docKey);
 
-                // Await the document snapshot
-                const docSnapshot = await getDoc(docRef);
-
-                if (!docSnapshot.exists()) {
-                    setMessage('Document not found.');
-                    return;
-                }
-
-                console.log("YAY");
-                if (docKey !== null) {
-                    console.log("EVEN BETTER");
-                    if (key === 1) {
-                        await updateDoc(docRef, {
-                            ['Introduction Paragraph Text']: "",
-                        });
-                    } else if (key === 2) {
-                        await updateDoc(docRef, {
-                            ['Body Paragraph Text']: "",
-                        });
-                    } else if (key === 3) {
-                        await updateDoc(docRef, {
-                            ['Conclusion Paragraph Text']: "",
-                        });
-                    }
+                if (key === 1) {
+                    await updateDoc(docRef, {
+                        ['Introduction Paragraph Text']: '',
+                    });
+                } else if (key === 2) {
+                    await updateDoc(docRef, {
+                        ['Body Paragraph Text']: '',
+                    });
+                } else if (key === 3) {
+                    await updateDoc(docRef, {
+                        ['Conclusion Paragraph Text']: '',
+                    });
                 }
 
                 // Now the Firestore operations have completed, we can allow the browser to close
@@ -106,7 +95,6 @@ function App() {
         return () => {
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
-
 
     }, []);
 
@@ -144,6 +132,9 @@ function App() {
             if (allSnapshots.length === 0) {
                 console.log('No documents with incomplete paragraphs found, creating a new document...');
                 // Create a new document since there are no suitable existing documents
+
+                createdDoc = true;
+                console.log(createdDoc + " Hheheaw")
                 await createNewDocument(snowballFightCollection, userId);
             } else {
                 console.log('Found documents with incomplete paragraphs, processing...');
@@ -168,7 +159,10 @@ function App() {
                         userIntroData !== undefined &&
                         userBodyData !== undefined &&
                         userConcluData !== undefined &&
-                        doc.data()["Introduction Paragraph Text"] !== "" &&
+                        userIntroData !== "" &&
+                        userIntroData !== "Taken" &&
+                        userBodyData !== "Taken" &&
+                        userConcluData !== "Taken" &&
                         !userIntroData.includes(userId) &&
                         !userBodyData.includes(userId) &&
                         !userConcluData.includes(userId)
@@ -184,7 +178,13 @@ function App() {
                     await processExistingDocument(earliestSuitableDoc.id, earliestSuitableDoc.data(), userId, snowballFightCollection);
                 } else {
                     console.log('All documents have user association, creating a new document...');
-                    await createNewDocument(snowballFightCollection, userId);
+                    if(!createdDoc){
+                        console.log(createdDoc + " Hheheaw")
+                        await createNewDocument(snowballFightCollection, userId);
+                    } else {
+                        createdDoc = false;
+                        console.log(createdDoc + " Hheheaw")
+                    }
                 }
             }
         } catch (error) {
@@ -196,6 +196,8 @@ function App() {
 
     const createNewDocument = async (collectionRef, userId) => {
         try {
+            createdDoc = false;
+            console.log(createdDoc + " Hheheaw")
             const newDocumentRef = doc(collectionRef);
             await setDoc(newDocumentRef, {
                 'Introduction Paragraph Text': '',
@@ -228,7 +230,6 @@ function App() {
     const determineParagraphEdit = async (docId, docData) => {
         docKey = docId;
         docInfo = docData;
-        setMessage(docId);
         const db = getFirestore();
         const snowballFightCollection = collection(db, "snowball-fight");
         const docRef = doc(snowballFightCollection, docId);
@@ -239,25 +240,31 @@ function App() {
         }
 
         if (!docData['Introduction Paragraph Text']) {
+            setMessage("Welcome " + username + "! Time for a new story!");
+            setEditText("Start the story!")
+
             await updateDoc(docRef, {
                 ['Introduction Paragraph Text']: "Taken",
             });
-            setMessage("Welcome " + username + "! Time for a new story!");
-            setEditText("Start the story!")
+
             key = 1;
         } else if (!docData['Body Paragraph Text']) {
+            setMessage("Welcome " + username + "! The current progress of the story is: " + docData['Introduction Paragraph Text']);
+            setEditText("Continue the story!")
+
             await updateDoc(docRef, {
                 ['Body Paragraph Text']: "Taken",
             });
-            setMessage("Welcome " + username + "! The current progress of the story is: " + docData['Introduction Paragraph Text']);
-            setEditText("Continue the story!")
+
             key = 2;
         } else if (!docData['Conclusion Paragraph Text']) {
+            setMessage("Welcome " + username + "! The current progress of the story is: " + docData['Introduction Paragraph Text'] + " " + docData['Body Paragraph Text']);
+            setEditText("Finish the story!")
+
             await updateDoc(docRef, {
                 ['Conclusion Paragraph Text']: "Taken",
             });
-            setMessage("Welcome " + username + "! The current progress of the story is: " + docData['Introduction Paragraph Text'] + " " + docData['Body Paragraph Text']);
-            setEditText("Finish the story!")
+
             key = 3;
         }
         setLoading(false);
