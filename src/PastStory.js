@@ -52,7 +52,7 @@ const CollectionDocuments = () => {
                     {documents.length > 0 ? (
                         documents.map((doc, index) => (
                             <div key={index} className="document-item">
-                                <h2>Story {doc.id}</h2>
+                                <h2>Story {index + 1}</h2>
                                 <a href={`/paststoryviewer/${doc.id}`}>View Story</a>
                             </div>
                         ))

@@ -41,6 +41,7 @@ function App() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const auth = getAuth();
         const handleBeforeUnload = async (event) => {
             // Prevent the browser from closing immediately
             event.preventDefault();
@@ -75,14 +76,6 @@ function App() {
             }
         };
 
-        window.addEventListener('beforeunload', handleBeforeUnload);
-
-// Clean up the event listener on component unmount
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
-
-        const auth = getAuth();
         onAuthStateChanged(auth, user => {
             if (user) {
                 setCurrentUser({uid: user.uid, displayName: user.displayName || "No username available"});
@@ -96,6 +89,13 @@ function App() {
                 setLoading(false);
             }
         })
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+// Clean up the event listener on component unmount
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
 
 
 
