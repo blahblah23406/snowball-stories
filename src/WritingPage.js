@@ -162,7 +162,7 @@ function App() {
                         userIntroData !== undefined &&
                         userBodyData !== undefined &&
                         userConcluData !== undefined &&
-                        !introData.includes("")&&
+                        introData !== undefined &&
                         !introData.includes("Taken")&&
                         !bodyData.includes("Taken") &&
                         !concluData.includes("Taken")&&
