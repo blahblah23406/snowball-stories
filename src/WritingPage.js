@@ -19,6 +19,7 @@ var key = 0;
 var docKey = null;
 var uid = null;
 var username = null;
+var docInfo = null;
 
 // Initialize Firebase with your Firebase configuration
 initializeApp({
@@ -52,6 +53,61 @@ function App() {
                 setLoading(false);
             }
         });
+
+        const handleBeforeUnload = async (event) => {
+            // Prevent the browser from closing immediately
+            event.preventDefault();
+            event.returnValue = '';
+
+            try {
+                const db = getFirestore();
+                const snowballFightCollection = collection(db, "snowball-fight");
+                const docRef = doc(snowballFightCollection, docKey);
+
+                // Await the document snapshot
+                const docSnapshot = await getDoc(docRef);
+
+                if (!docSnapshot.exists()) {
+                    setMessage('Document not found.');
+                    return;
+                }
+
+                console.log("YAY");
+                if (docKey !== null) {
+                    console.log("EVEN BETTER");
+                    if (key === 1) {
+                        await updateDoc(docRef, {
+                            ['Introduction Paragraph Text']: "",
+                        });
+                    } else if (key === 2) {
+                        await updateDoc(docRef, {
+                            ['Body Paragraph Text']: "",
+                        });
+                    } else if (key === 3) {
+                        await updateDoc(docRef, {
+                            ['Conclusion Paragraph Text']: "",
+                        });
+                    }
+                }
+
+                // Now the Firestore operations have completed, we can allow the browser to close
+                event.returnValue = null;
+
+            } catch (error) {
+                console.error('Error handling beforeunload:', error);
+                // If an error occurs, we still prevent the browser from closing
+                event.returnValue = '';
+            }
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+// Clean up the event listener on component unmount
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+
+
     }, []);
 
     const findOrCreateDocument = async (userId) => {
@@ -169,23 +225,43 @@ function App() {
     };
 
 
-    const determineParagraphEdit = (docId, docData) => {
+    const determineParagraphEdit = async (docId, docData) => {
         docKey = docId;
+        docInfo = docData;
         setMessage(docId);
+        const db = getFirestore();
+        const snowballFightCollection = collection(db, "snowball-fight");
+        const docRef = doc(snowballFightCollection, docId);
+        const docSnapshot = await getDoc(docRef);
+        if (!docSnapshot.exists()) {
+            setMessage('Document not found.');
+            return;
+        }
+
         if (!docData['Introduction Paragraph Text']) {
+            await updateDoc(docRef, {
+                ['Introduction Paragraph Text']: "Taken",
+            });
             setMessage("Welcome " + username + "! Time for a new story!");
             setEditText("Start the story!")
             key = 1;
         } else if (!docData['Body Paragraph Text']) {
+            await updateDoc(docRef, {
+                ['Body Paragraph Text']: "Taken",
+            });
             setMessage("Welcome " + username + "! The current progress of the story is: " + docData['Introduction Paragraph Text']);
             setEditText("Continue the story!")
             key = 2;
         } else if (!docData['Conclusion Paragraph Text']) {
+            await updateDoc(docRef, {
+                ['Conclusion Paragraph Text']: "Taken",
+            });
             setMessage("Welcome " + username + "! The current progress of the story is: " + docData['Introduction Paragraph Text'] + " " + docData['Body Paragraph Text']);
             setEditText("Finish the story!")
             key = 3;
         }
         setLoading(false);
+        console.log(key);
     };
 
 
