@@ -41,61 +41,63 @@ function App() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const auth = getAuth();
-        const handleVisibilityChange = async () => {
-            if (document.visibilityState === 'hidden') {
-                // Page is being hidden, perform cleanup operations
-                try {
-                    const db = getFirestore();
-                    const snowballFightCollection = collection(db, "snowball-fight");
-                    const docRef = doc(snowballFightCollection, docKey);
+    const auth = getAuth();
+    let user; // Define user variable outside the callback
 
-                    if (key === 1) {
-                        await updateDoc(docRef, {
-                            ['Introduction Paragraph Text']: '',
-                        });
-                    } else if (key === 2) {
-                        await updateDoc(docRef, {
-                            ['Body Paragraph Text']: '',
-                        });
-                    } else if (key === 3) {
-                        await updateDoc(docRef, {
-                            ['Conclusion Paragraph Text']: '',
-                        });
-                    }
+    const handleVisibilityChange = async () => {
+        if (document.visibilityState === 'hidden') {
+            // Page is being hidden, perform cleanup operations
+            try {
+                const db = getFirestore();
+                const snowballFightCollection = collection(db, "snowball-fight");
+                const docRef = doc(snowballFightCollection, docKey);
 
-                } catch (error) {
-                    console.error('Error handling visibility change:', error);
+                if (key === 1) {
+                    await updateDoc(docRef, {
+                        ['Introduction Paragraph Text']: '',
+                    });
+                } else if (key === 2) {
+                    await updateDoc(docRef, {
+                        ['Body Paragraph Text']: '',
+                    });
+                } else if (key === 3) {
+                    await updateDoc(docRef, {
+                        ['Conclusion Paragraph Text']: '',
+                    });
                 }
-            } else if (document.visibilityState === 'shown') {
-                findOrCreateDocument(user.uid);
-            }
-        };
 
-        onAuthStateChanged(auth, user => {
+            } catch (error) {
+                console.error('Error handling visibility change:', error);
+            }
+        } else if (document.visibilityState === 'shown') {
+            // Check if user is defined before calling findOrCreateDocument
             if (user) {
-                setCurrentUser({uid: user.uid, displayName: user.displayName || "No username available"});
-                setMessage('Loading document...');
-                uid = user.uid;
-                username = user.displayName;
                 findOrCreateDocument(user.uid);
-            } else {
-                setCurrentUser(null);
-                setMessage('Please log in.');
-                setLoading(false);
             }
-        })
+        }
+    };
 
-        window.addEventListener('visibilitychange', handleVisibilityChange);
+    onAuthStateChanged(auth, currentUser => {
+        if (currentUser) {
+            user = currentUser; // Assign currentUser to user variable
+            setCurrentUser({uid: currentUser.uid, displayName: currentUser.displayName || "No username available"});
+            setMessage('Loading document...');
+            uid = currentUser.uid;
+            username = currentUser.displayName;
+            findOrCreateDocument(currentUser.uid);
+        } else {
+            setCurrentUser(null);
+            setMessage('Please log in.');
+            setLoading(false);
+        }
+    });
 
-        return () => {
-            window.removeEventListener('visibilitychange', handleVisibilityChange);
-        };
+    window.addEventListener('visibilitychange', handleVisibilityChange);
 
-
-
-    }, []);
-
+    return () => {
+        window.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+}, []);
     const findOrCreateDocument = async (userId) => {
         console.log('Starting to find or create document...');
         try {
