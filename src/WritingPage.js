@@ -70,10 +70,7 @@ function App() {
                 console.error('Error handling visibility change:', error);
             }
         } else if (document.visibilityState === 'shown') {
-            // Check if user is defined before calling findOrCreateDocument
-            if (user) {
-                findOrCreateDocument(user.uid);
-            }
+            findOrCreateDocument(uid);
         }
     };
 
