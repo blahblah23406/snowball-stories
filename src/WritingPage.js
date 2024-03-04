@@ -42,6 +42,7 @@ function App() {
 
     useEffect(() => {
         const auth = getAuth();
+
         const handleBeforeUnload = async (event) => {
             // Prevent the browser from closing immediately
             event.preventDefault();
@@ -76,6 +77,34 @@ function App() {
             }
         };
 
+        const handleVisibilityChange = async () => {
+            if (document.visibilityState === 'hidden') {
+                // Page is being hidden, perform cleanup operations
+                try {
+                    const db = getFirestore();
+                    const snowballFightCollection = collection(db, "snowball-fight");
+                    const docRef = doc(snowballFightCollection, docKey);
+
+                    if (key === 1) {
+                        await updateDoc(docRef, {
+                            ['Introduction Paragraph Text']: '',
+                        });
+                    } else if (key === 2) {
+                        await updateDoc(docRef, {
+                            ['Body Paragraph Text']: '',
+                        });
+                    } else if (key === 3) {
+                        await updateDoc(docRef, {
+                            ['Conclusion Paragraph Text']: '',
+                        });
+                    }
+
+                } catch (error) {
+                    console.error('Error handling visibility change:', error);
+                }
+            }
+        };
+
         onAuthStateChanged(auth, user => {
             if (user) {
                 setCurrentUser({uid: user.uid, displayName: user.displayName || "No username available"});
@@ -90,10 +119,11 @@ function App() {
             }
         })
 
+        window.addEventListener('visibilitychange', handleVisibilityChange);
         window.addEventListener('beforeunload', handleBeforeUnload);
 
-// Clean up the event listener on component unmount
         return () => {
+            window.removeEventListener('visibilitychange', handleVisibilityChange);
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
 
