@@ -103,6 +103,8 @@ function App() {
             const snowballFightCollection = collection(db, "snowball-fight");
             console.log('Firestore and collection initialized.');
 
+            await deleteEmptyDocuments(snowballFightCollection);
+
             // Query to fetch documents with incomplete body paragraphs
             console.log('Querying for documents with incomplete body paragraphs...');
             const bodyQ = query(
@@ -191,7 +193,28 @@ function App() {
         }
     };
 
+    const deleteEmptyDocuments = async (collectionRef) => {
+    try {
+        const emptyDocsQuery = query(
+            collectionRef,
+            where("Introduction Paragraph Text", "==", ""),
+            where("Body Paragraph Text", "==", ""),
+            where("Conclusion Paragraph Text", "==", "")
+        );
 
+        const emptyDocsSnapshot = await getDocs(emptyDocsQuery);
+
+        const deletePromises = emptyDocsSnapshot.docs.map(async (doc) => {
+            await deleteDoc(doc.ref);
+            console.log(`Deleted empty document with ID: ${doc.id}`);
+        });
+
+        await Promise.all(deletePromises);
+    } catch (error) {
+        console.log(`Error deleting empty documents: ${error.message}`);
+    }
+};
+    
     const createNewDocument = async (collectionRef, userId) => {
         try {
             createdDoc = false;
