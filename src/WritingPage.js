@@ -42,41 +42,6 @@ function App() {
 
     useEffect(() => {
         const auth = getAuth();
-
-        const handleBeforeUnload = async (event) => {
-            // Prevent the browser from closing immediately
-            event.preventDefault();
-            event.returnValue = '';
-
-            try {
-                const db = getFirestore();
-                const snowballFightCollection = collection(db, "snowball-fight");
-                const docRef = doc(snowballFightCollection, docKey);
-
-                if (key === 1) {
-                    await updateDoc(docRef, {
-                        ['Introduction Paragraph Text']: '',
-                    });
-                } else if (key === 2) {
-                    await updateDoc(docRef, {
-                        ['Body Paragraph Text']: '',
-                    });
-                } else if (key === 3) {
-                    await updateDoc(docRef, {
-                        ['Conclusion Paragraph Text']: '',
-                    });
-                }
-
-                // Now the Firestore operations have completed, we can allow the browser to close
-                event.returnValue = null;
-
-            } catch (error) {
-                console.error('Error handling beforeunload:', error);
-                // If an error occurs, we still prevent the browser from closing
-                event.returnValue = '';
-            }
-        };
-
         const handleVisibilityChange = async () => {
             if (document.visibilityState === 'hidden') {
                 // Page is being hidden, perform cleanup operations
@@ -102,6 +67,8 @@ function App() {
                 } catch (error) {
                     console.error('Error handling visibility change:', error);
                 }
+            } else if (document.visibilityState === 'shown') {
+                findOrCreateDocument(user.uid);
             }
         };
 
@@ -120,11 +87,9 @@ function App() {
         })
 
         window.addEventListener('visibilitychange', handleVisibilityChange);
-        window.addEventListener('beforeunload', handleBeforeUnload);
 
         return () => {
             window.removeEventListener('visibilitychange', handleVisibilityChange);
-            window.removeEventListener('beforeunload', handleBeforeUnload);
         };
 
 
