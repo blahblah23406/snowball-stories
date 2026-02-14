@@ -1,48 +1,68 @@
 import './PastStory.css';
-import { collection, query, getDocs, getFirestore } from "firebase/firestore";
-import { initializeApp } from "firebase/app";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { auth, db } from "./firebase";
+import { useAuthState } from 'react-firebase-hooks/auth';
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-
-const firebaseConfig = {
-    apiKey: "AIzaSyCZ9Eia_8WUjVwHeLO-2CwOSketMB_Cwhs",
-    authDomain: "snowball-stories.firebaseapp.com",
-    projectId: "snowball-stories",
-    storageBucket: "snowball-stories.appspot.com",
-    messagingSenderId: "874662831073",
-    appId: "1:874662831073:web:8ed4031c527b263a0568a0",
-    measurementId: "G-XR3N6JDFZK"
-};
-
-const app = initializeApp(firebaseConfig);
-
 const CollectionDocuments = () => {
     const { uid } = useParams();
-    const userId = uid;
+    const [user, loading, error] = useAuthState(auth);
     const [documents, setDocuments] = useState([]);
+    const [fetchError, setFetchError] = useState(null);
 
     useEffect(() => {
         const fetchCollectionDocuments = async () => {
+            if (loading) return;
+            if (!user) return;
+
+            // Security check: Ensure user is accessing their own stories
+            if (user.uid !== uid) {
+                setFetchError("Unauthorized: You can only view your own stories.");
+                return;
+            }
+
             try {
-                const db = getFirestore(app);
-                const q = query(collection(db, "snowball-fight"));
-                const querySnapshot = await getDocs(q);
-                const data = querySnapshot.docs
-                    .map((doc) => ({ id: doc.id, ...doc.data() }))
-                    .filter(doc =>
-                        doc["Introduction Paragraph Text User"] === userId ||
-                        doc["Body Paragraph Text User"] === userId ||
-                        doc["Conclusion Paragraph Text User"] === userId)
+                const snowballRef = collection(db, "snowball-fight");
+
+                // Parallel queries for each paragraph type to avoid downloading the entire collection
+                // This fixes the Excessive Data Exposure vulnerability
+                const q1 = query(snowballRef, where("Introduction Paragraph Text User", "==", uid));
+                const q2 = query(snowballRef, where("Body Paragraph Text User", "==", uid));
+                const q3 = query(snowballRef, where("Conclusion Paragraph Text User", "==", uid));
+
+                const [snap1, snap2, snap3] = await Promise.all([
+                    getDocs(q1),
+                    getDocs(q2),
+                    getDocs(q3)
+                ]);
+
+                // Combine and deduplicate documents
+                const docMap = new Map();
+
+                [...snap1.docs, ...snap2.docs, ...snap3.docs].forEach(doc => {
+                    if (!docMap.has(doc.id)) {
+                        docMap.set(doc.id, { id: doc.id, ...doc.data() });
+                    }
+                });
+
+                const data = Array.from(docMap.values())
                     .sort((a, b) => a.createdAt - b.createdAt);
+
                 setDocuments(data);
             } catch (error) {
                 console.error("Error fetching collection documents:", error);
+                setFetchError("Error fetching documents.");
             }
         };
 
         fetchCollectionDocuments();
-    }, [userId]);
+    }, [user, loading, uid]);
+
+    if (loading) return <div className="global-background"><p>Loading...</p></div>;
+    if (error) return <div className="global-background"><p>Error: {error.message}</p></div>;
+    if (!user) return <div className="global-background"><p>Please log in to view your stories.</p></div>;
+    if (fetchError) return <div className="global-background"><p>{fetchError}</p></div>;
 
     return (
         <div className="global-background">
@@ -57,17 +77,11 @@ const CollectionDocuments = () => {
                             </div>
                         ))
                     ) : (
-                        <p>No documents found for user ID: {userId}</p>
+                        <p>No documents found for user ID: {uid}</p>
                     )}
-
-
-
-
                 </div>
-
             </div>
         </div>
-
     );
 };
 
