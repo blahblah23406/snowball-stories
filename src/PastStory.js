@@ -1,8 +1,9 @@
 import './PastStory.css';
-import { collection, query, getDocs, getFirestore } from "firebase/firestore";
+import { collection, query, getDocs, getFirestore, where } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 
 const firebaseConfig = {
@@ -19,30 +20,64 @@ const app = initializeApp(firebaseConfig);
 
 const CollectionDocuments = () => {
     const { uid } = useParams();
-    const userId = uid;
+    const navigate = useNavigate();
     const [documents, setDocuments] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchCollectionDocuments = async () => {
+        const fetchCollectionDocuments = async (userId) => {
             try {
                 const db = getFirestore(app);
-                const q = query(collection(db, "snowball-fight"));
-                const querySnapshot = await getDocs(q);
-                const data = querySnapshot.docs
-                    .map((doc) => ({ id: doc.id, ...doc.data() }))
-                    .filter(doc =>
-                        doc["Introduction Paragraph Text User"] === userId ||
-                        doc["Body Paragraph Text User"] === userId ||
-                        doc["Conclusion Paragraph Text User"] === userId)
+                const snowballRef = collection(db, "snowball-fight");
+
+                // Perform 3 separate queries to avoid downloading the entire collection
+                // This prevents excessive data exposure by only fetching relevant documents
+                const q1 = query(snowballRef, where("Introduction Paragraph Text User", "==", userId));
+                const q2 = query(snowballRef, where("Body Paragraph Text User", "==", userId));
+                const q3 = query(snowballRef, where("Conclusion Paragraph Text User", "==", userId));
+
+                const [snap1, snap2, snap3] = await Promise.all([
+                    getDocs(q1),
+                    getDocs(q2),
+                    getDocs(q3)
+                ]);
+
+                // Merge results by ID to handle duplicates (if a user contributed multiple parts)
+                const docsMap = new Map();
+                [...snap1.docs, ...snap2.docs, ...snap3.docs].forEach(doc => {
+                    docsMap.set(doc.id, { id: doc.id, ...doc.data() });
+                });
+
+                const data = Array.from(docsMap.values())
                     .sort((a, b) => a.createdAt - b.createdAt);
+
                 setDocuments(data);
             } catch (error) {
                 console.error("Error fetching collection documents:", error);
+            } finally {
+                setLoading(false); // Stop loading once data is fetched
             }
         };
 
-        fetchCollectionDocuments();
-    }, [userId]);
+        const auth = getAuth(app);
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                // Not logged in
+                navigate("/");
+            } else if (user.uid !== uid) {
+                // Unauthorized access to another user's stories
+                navigate("/");
+            } else {
+                // Authorized
+                fetchCollectionDocuments(user.uid);
+            }
+        });
+        return () => unsubscribe();
+    }, [uid, navigate]);
+
+    if (loading) {
+        return <div className="global-background"><p style={{color: 'white', textAlign: 'center', marginTop: '50px'}}>Loading...</p></div>;
+    }
 
     return (
         <div className="global-background">
@@ -57,12 +92,8 @@ const CollectionDocuments = () => {
                             </div>
                         ))
                     ) : (
-                        <p>No documents found for user ID: {userId}</p>
+                        <p>No documents found for user ID: {uid}</p>
                     )}
-
-
-
-
                 </div>
 
             </div>
