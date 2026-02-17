@@ -1,8 +1,6 @@
 import './WritingPage.css';
 import React, { useState, useEffect } from 'react';
-import { initializeApp } from 'firebase/app';
 import {
-    getFirestore,
     collection,
     query,
     where,
@@ -13,7 +11,8 @@ import {
     getDoc,
     deleteDoc
 } from 'firebase/firestore';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth, db } from './firebase';
 import ImageButton from './ImageButton';
 import {wait} from "@testing-library/user-event/dist/utils";
 
@@ -24,17 +23,6 @@ var username = null;
 var docInfo = null;
 var createdDoc = false;
 
-// Initialize Firebase with your Firebase configuration
-initializeApp({
-    apiKey: "AIzaSyCZ9Eia_8WUjVwHeLO-2CwOSketMB_Cwhs",
-    authDomain: "snowball-stories.firebaseapp.com",
-    projectId: "snowball-stories",
-    storageBucket: "snowball-stories.appspot.com",
-    messagingSenderId: "874662831073",
-    appId: "1:874662831073:web:8ed4031c527b263a0568a0",
-    measurementId: "G-XR3N6JDFZK"
-});
-
 function App() {
     const [currentUser, setCurrentUser] = useState(null);
     const [editText, setEditText] = useState('');
@@ -42,14 +30,12 @@ function App() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-    const auth = getAuth();
     let user; // Define user variable outside the callback
 
     const handleVisibilityChange = async () => {
         if (document.visibilityState === 'hidden') {
             // Page is being hidden, perform cleanup operations
             try {
-                const db = getFirestore();
                 const snowballFightCollection = collection(db, "snowball-fight");
                 const docRef = doc(snowballFightCollection, docKey);
 
@@ -98,7 +84,6 @@ function App() {
 }, []);
     const findOrCreateDocument = async (userId) => {
         try {
-            const db = getFirestore();
             const snowballFightCollection = collection(db, "snowball-fight");
 
             await deleteEmptyDocuments(snowballFightCollection);
@@ -233,7 +218,6 @@ function App() {
     const determineParagraphEdit = async (docId, docData) => {
         docKey = docId;
         docInfo = docData;
-        const db = getFirestore();
         const snowballFightCollection = collection(db, "snowball-fight");
         const docRef = doc(snowballFightCollection, docId);
         const docSnapshot = await getDoc(docRef);
@@ -286,7 +270,6 @@ function App() {
                 return;
             }
 
-            const db = getFirestore();
             const snowballFightCollection = collection(db, "snowball-fight");
 
             // Create a Firestore document reference

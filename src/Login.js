@@ -1,23 +1,10 @@
 import './Login.css';
-import { getAuth, signInWithRedirect, onAuthStateChanged } from "firebase/auth";
+import { signInWithRedirect, onAuthStateChanged } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
 import {useEffect, useState} from "react";
-import firebase from "firebase/compat/app";
+import { auth } from "./firebase";
 import WritingPage from "./WritingPage";
 import Snowflake from './Snowflake';
-
-// Initialize Firebase
-const firebaseConfig = {
-    apiKey: "AIzaSyCZ9Eia_8WUjVwHeLO-2CwOSketMB_Cwhs",
-    authDomain: "snowball-stories.firebaseapp.com",
-    projectId: "snowball-stories",
-    storageBucket: "snowball-stories.appspot.com",
-    messagingSenderId: "874662831073",
-    appId: "1:874662831073:web:8ed4031c527b263a0568a0",
-    measurementId: "G-XR3N6JDFZK"
-};
-
-firebase.initializeApp(firebaseConfig);
 
 function Login() {
     const [user, setUser] = useState(null);
@@ -25,7 +12,6 @@ function Login() {
     const [snowflakes, setSnowflakes] = useState([]);
 
     useEffect(() => {
-        const auth = getAuth();
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setUser(user);
@@ -67,7 +53,6 @@ function Login() {
     const handleClick = () => {
         console.log('Button clicked!');
         const provider = new GoogleAuthProvider();
-        const auth = getAuth();
         signInWithRedirect(auth, provider);
     };
 
