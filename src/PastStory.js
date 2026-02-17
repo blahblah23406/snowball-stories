@@ -1,21 +1,8 @@
 import './PastStory.css';
-import { collection, query, getDocs, getFirestore } from "firebase/firestore";
-import { initializeApp } from "firebase/app";
+import { collection, query, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
-
-const firebaseConfig = {
-    apiKey: "AIzaSyCZ9Eia_8WUjVwHeLO-2CwOSketMB_Cwhs",
-    authDomain: "snowball-stories.firebaseapp.com",
-    projectId: "snowball-stories",
-    storageBucket: "snowball-stories.appspot.com",
-    messagingSenderId: "874662831073",
-    appId: "1:874662831073:web:8ed4031c527b263a0568a0",
-    measurementId: "G-XR3N6JDFZK"
-};
-
-const app = initializeApp(firebaseConfig);
+import { db } from "./firebase";
 
 const CollectionDocuments = () => {
     const { uid } = useParams();
@@ -25,7 +12,6 @@ const CollectionDocuments = () => {
     useEffect(() => {
         const fetchCollectionDocuments = async () => {
             try {
-                const db = getFirestore(app);
                 const q = query(collection(db, "snowball-fight"));
                 const querySnapshot = await getDocs(q);
                 const data = querySnapshot.docs
