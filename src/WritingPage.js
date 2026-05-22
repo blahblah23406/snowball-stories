@@ -1,6 +1,8 @@
 import './WritingPage.css';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
+    auth,
+    db,
     collection,
     query,
     where,
@@ -9,10 +11,9 @@ import {
     doc,
     setDoc,
     getDoc,
-    deleteDoc
-} from 'firebase/firestore';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth, db } from './firebase';
+    deleteDoc,
+    onAuthStateChanged
+} from './firebase';
 import ImageButton from './ImageButton';
 
 function WritingPage() {
@@ -20,6 +21,7 @@ function WritingPage() {
     const [editText, setEditText] = useState('');
     const [message, setMessage] = useState('Loading user...');
     const [loading, setLoading] = useState(true);
+    const [storyProgress, setStoryProgress] = useState({ intro: '', body: '', conclusion: '' });
 
     const editKeyRef = useRef(0);
     const docKeyRef = useRef(null);
@@ -57,24 +59,36 @@ function WritingPage() {
             return;
         }
 
+        const data = docSnapshot.data();
         const usernameStr = usernameRef.current || 'Author';
+        
+        const intro = data['Introduction Paragraph Text'] || '';
+        const body = data['Body Paragraph Text'] || '';
+        const conclusion = data['Conclusion Paragraph Text'] || '';
 
-        if (!docData['Introduction Paragraph Text']) {
-            setMessage(`Welcome ${usernameStr}! Time for a new story!`);
+        // Exclude "Taken" tags from the actual reading text
+        setStoryProgress({
+            intro: intro === 'Taken' ? '' : intro,
+            body: body === 'Taken' ? '' : body,
+            conclusion: conclusion === 'Taken' ? '' : conclusion
+        });
+
+        if (!intro || intro === 'Taken') {
+            setMessage(`Welcome ${usernameStr}! Let's start a brand new tale.`);
             setEditText("Start the story!");
             await updateDoc(docRef, {
                 'Introduction Paragraph Text': "Taken"
             });
             editKeyRef.current = 1;
-        } else if (!docData['Body Paragraph Text']) {
-            setMessage(`Welcome ${usernameStr}! The current progress of the story is: ${docData['Introduction Paragraph Text']}`);
+        } else if (!body || body === 'Taken') {
+            setMessage(`Welcome ${usernameStr}! Add a exciting turn to the story.`);
             setEditText("Continue the story!");
             await updateDoc(docRef, {
                 'Body Paragraph Text': "Taken"
             });
             editKeyRef.current = 2;
-        } else if (!docData['Conclusion Paragraph Text']) {
-            setMessage(`Welcome ${usernameStr}! The current progress of the story is: ${docData['Introduction Paragraph Text']} ${docData['Body Paragraph Text']}`);
+        } else if (!conclusion || conclusion === 'Taken') {
+            setMessage(`Welcome ${usernameStr}! Bring this winter journey to an end.`);
             setEditText("Finish the story!");
             await updateDoc(docRef, {
                 'Conclusion Paragraph Text': "Taken"
@@ -286,28 +300,124 @@ function WritingPage() {
         }
     };
 
-    if (loading) return <div className="loading-container"><p>{message}</p></div>;
+    const handleSignOut = () => {
+        if (auth && typeof auth.signOut === 'function') {
+            auth.signOut();
+        } else {
+            window.location.reload();
+        }
+    };
+
+    if (loading) {
+        return (
+            <div className="login-loading-screen">
+                <div className="loading-spinner"></div>
+                <p>{message}</p>
+            </div>
+        );
+    }
 
     return (
-        <div className="global-background">
-            <div className="mega-container">
-                <div className="container">
-                    <p>{message}</p>
-                    <textarea 
-                        value={editText} 
-                        onChange={(e) => setEditText(e.target.value)}
-                        style={{ marginBottom: '10px' }}
-                    />
+        <div className="writing-workspace-wrapper">
+            {/* Elegant Header */}
+            <header className="workspace-header">
+                <div className="logo-group">
+                    <span className="logo-icon">❄️</span>
+                    <h1 className="logo-title">Snowball Stories!</h1>
                 </div>
-                <div style={{ marginBottom: '10px' }}>
-                    <ImageButton 
-                        imageUrl="https://i.ibb.co/wg7NcLz/skeeyee-removebg-preview.png"
-                        onClick={handleEditSubmit} 
-                        text="Submit"
-                    />
+                <div className="user-controls">
+                    <span className="user-badge">🖋️ {currentUser?.displayName || "Author"}</span>
+                    <button className="signout-button" onClick={handleSignOut}>Log Out</button>
                 </div>
-                <a href={`/paststory/${uidRef.current}`}>Your Past Stories</a>
-            </div>
+            </header>
+
+            <main className="workspace-main-content">
+                {/* Visual Step Tracker */}
+                <div className="flurry-steps-tracker">
+                    <div className={`step-pill ${editKeyRef.current === 1 ? 'active' : ''} ${editKeyRef.current > 1 ? 'completed' : ''}`}>
+                        <span className="step-num">1</span>
+                        <span className="step-label">Introduction</span>
+                    </div>
+                    <div className="step-connector"></div>
+                    <div className={`step-pill ${editKeyRef.current === 2 ? 'active' : ''} ${editKeyRef.current > 2 ? 'completed' : ''}`}>
+                        <span className="step-num">2</span>
+                        <span className="step-label">Body</span>
+                    </div>
+                    <div className="step-connector"></div>
+                    <div className={`step-pill ${editKeyRef.current === 3 ? 'active' : ''} ${editKeyRef.current > 3 ? 'completed' : ''}`}>
+                        <span className="step-num">3</span>
+                        <span className="step-label">Conclusion</span>
+                    </div>
+                </div>
+
+                <div className="message-toast">
+                    <p className="toast-text">{message}</p>
+                </div>
+
+                {/* Cooperative Story Board (Parchment scroll of past text) */}
+                {editKeyRef.current > 1 && (storyProgress.intro || storyProgress.body) && (
+                    <section className="story-parchment-container">
+                        <div className="parchment-header">
+                            <h3>📜 The Story So Far...</h3>
+                        </div>
+                        <div className="parchment-paper">
+                            {storyProgress.intro && (
+                                <div className="parchment-paragraph intro-section">
+                                    <span className="paragraph-tag">Chapter I: The Setup</span>
+                                    <p>{storyProgress.intro}</p>
+                                </div>
+                            )}
+                            {storyProgress.body && (
+                                <div className="parchment-paragraph body-section">
+                                    <span className="paragraph-tag">Chapter II: The Flurry</span>
+                                    <p>{storyProgress.body}</p>
+                                </div>
+                            )}
+                        </div>
+                    </section>
+                )}
+
+                {/* Drafting Container */}
+                <section className="drafting-card">
+                    <div className="card-header">
+                        <h2>
+                            {editKeyRef.current === 1 && "✍️ Draft the Introduction"}
+                            {editKeyRef.current === 2 && "✍️ Draft the Body Paragraph"}
+                            {editKeyRef.current === 3 && "✍️ Draft the Conclusion"}
+                        </h2>
+                        <p className="card-guideline">
+                            {editKeyRef.current === 1 && "Set the stage, describe the winter day, and introduce your characters..."}
+                            {editKeyRef.current === 2 && "Add suspense, action, or a surprising snowball fight event..."}
+                            {editKeyRef.current === 3 && "Bring the characters inside, wrap up the plot, and leave a cozy warm feeling..."}
+                        </p>
+                    </div>
+
+                    <div className="editor-container">
+                        <textarea 
+                            className="story-textarea"
+                            value={editText} 
+                            onChange={(e) => setEditText(e.target.value)}
+                            placeholder="Write your winter story paragraph here..."
+                            rows={6}
+                        />
+                    </div>
+
+                    <div className="action-buttons-group">
+                        <ImageButton 
+                            imageUrl="https://i.ibb.co/wg7NcLz/skeeyee-removebg-preview.png"
+                            onClick={handleEditSubmit} 
+                            text="Throw Snowball (Submit)"
+                        />
+                    </div>
+                </section>
+            </main>
+
+            {/* Bottom Dashboard Navigation */}
+            <footer className="workspace-footer">
+                <a className="past-stories-link" href={`/paststory/${uidRef.current}`}>
+                    📚 View Your Past Stories Dashboard
+                </a>
+            </footer>
         </div>
     );
 }

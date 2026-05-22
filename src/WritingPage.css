@@ -1,83 +1,390 @@
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap');
+/* Cooperative Writing Workspace Layout & Styling */
 
-@import url('https://fonts.googleapis.com/css2?family=Bahnschrift&display=swap');
-
-.global-background {
-    margin: 0;
-    padding: 0;
-    width: 1400px;
-    background-image: url('https://i.ibb.co/hscPnFN/Untitled-design-5.png');
-    background-size: cover;
-    background-position: center;
+.writing-workspace-wrapper {
+    min-height: 100vh;
+    width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    background: var(--bg-gradient-frosty);
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-primary);
+}
+
+/* Elegant Glassmorphic Header */
+.workspace-header {
+    background: var(--glass-bg);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    padding: 1.25rem 2rem;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    height: 100vh;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-.mega-container{
-    max-width: 1400px;
-    max-height: 800px;
+.logo-group {
     display: flex;
-    justify-content: center;
-    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
 }
 
+.logo-icon {
+    font-size: 1.8rem;
+    animation: spin-slow 15s linear infinite;
+    display: inline-block;
+}
 
-.container {
-    max-width: 600px;
-    max-height: 380px;
+.logo-title {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--text-dark-blue);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    letter-spacing: -0.5px;
+}
+
+.user-controls {
     display: flex;
-    justify-content: center;
-    align-self: center;
-    flex-direction: column;
-    padding: 20px;
-    background-color: rgba(170, 154, 222, 0.14);
-
-    border-radius: 8px;
-    overflow-y: auto;
+    align-items: center;
+    gap: 1.25rem;
 }
 
-/* Textarea style */
-textarea {
-    width: 90%;
-    padding: 10px;
-    height: 100px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-family: 'EB Garamond', serif;
-    font-size: 16px;
-    align-self: center;
+.user-badge {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-lg);
+    font-size: 0.95rem;
+    font-weight: 550;
+    color: var(--text-primary);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-/* Button style */
-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
+.signout-button {
+    background: rgba(220, 38, 38, 0.1);
+    color: #b91c1c;
+    border: 1px solid rgba(220, 38, 38, 0.2);
+    padding: 0.5rem 1.1rem;
+    border-radius: var(--border-radius-md);
     cursor: pointer;
-    font-family: 'Bahnschrift', sans-serif;
-    font-size: 16px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: var(--transition-smooth);
 }
 
-/* Link style */
-a {
-    color: midnightblue;
-    text-decoration: none;
-    font-family: 'Bahnschrift', sans-serif;
-    font-size: 16px;
-    align-self: center;
-    text-decoration: underline;
-
+.signout-button:hover {
+    background: #b91c1c;
+    color: white;
+    border-color: #b91c1c;
+    transform: translateY(-1px);
 }
 
-/* Paragraph style */
-p {
-    font-family: 'Bahnschrift', sans-serif;
-    font-size: 16px;
+/* Workspace Main Container */
+.workspace-main-content {
+    flex: 1;
+    max-width: 850px;
+    width: 90%;
+    margin: 2.5rem auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Step/Phase Progress Tracker */
+.flurry-steps-tracker {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border-radius: var(--border-radius-md);
+    padding: 1.2rem 2rem;
+    box-shadow: var(--glass-shadow);
+}
+
+.step-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    opacity: 0.5;
+    transition: var(--transition-smooth);
+}
+
+.step-pill.active {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.step-pill.completed {
+    opacity: 0.9;
+}
+
+.step-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--text-secondary);
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: var(--transition-bounce);
+}
+
+.step-pill.active .step-num {
+    background: var(--accent-blue);
+    box-shadow: 0 0 12px var(--accent-blue);
+}
+
+.step-pill.completed .step-num {
+    background: var(--accent-cyan);
+    color: var(--text-dark-blue);
+    box-shadow: 0 0 12px var(--accent-cyan-glow);
+}
+
+.step-label {
+    font-weight: 550;
+    font-size: 1rem;
+    color: var(--text-primary);
+}
+
+.step-connector {
+    flex: 1;
+    height: 2px;
+    background: rgba(0, 0, 0, 0.08);
+    margin: 0 1rem;
+    border-radius: 2px;
+}
+
+/* Message Toast Banner */
+.message-toast {
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: var(--border-radius-md);
+    padding: 1rem 1.5rem;
     text-align: center;
-    align-self: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.toast-text {
+    font-size: 1.05rem;
+    color: #1e40af;
+    font-weight: 500;
+}
+
+/* Cooperative Story Board (Parchment scroll) */
+.story-parchment-container {
+    background: #fdfaf2;
+    border: 1px solid #e2d2bb;
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06), inset 0 0 40px rgba(181, 149, 101, 0.12);
+    padding: 2.2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.story-parchment-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: repeating-linear-gradient(90deg, #dcd0bc, #dcd0bc 10px, #fdfaf2 10px, #fdfaf2 20px);
+}
+
+.parchment-header h3 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.3rem;
+    color: #855c33;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px dashed rgba(133, 92, 51, 0.2);
+    padding-bottom: 0.5rem;
+}
+
+.parchment-paper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+}
+
+.parchment-paragraph {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.paragraph-tag {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #a0784e;
+}
+
+.parchment-paragraph p {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.35rem;
+    line-height: 1.7;
+    color: #2b1f14;
+    text-align: justify;
+}
+
+/* Drafting Card Container */
+.drafting-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    padding: 2.5rem;
+    box-shadow: var(--glass-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+}
+
+.card-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.card-header h2 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.6rem;
+    color: var(--text-dark-blue);
+    font-weight: 600;
+}
+
+.card-guideline {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+/* Textarea story writing styles */
+.editor-container {
+    width: 100%;
+}
+
+.story-textarea {
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: var(--border-radius-md);
+    background: rgba(255, 255, 255, 0.65);
+    padding: 1.25rem;
+    font-family: 'EB Garamond', serif;
+    font-size: 1.35rem;
+    line-height: 1.6;
+    color: var(--text-dark-blue);
+    outline: none;
+    transition: var(--transition-smooth);
+    resize: vertical;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.story-textarea:focus {
+    border-color: var(--accent-blue);
+    background: #ffffff;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.01), 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+.action-buttons-group {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+/* Footer Dashboard Styling */
+.workspace-footer {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 0 3.5rem;
+}
+
+.past-stories-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    color: var(--text-primary);
+    padding: 0.8rem 1.6rem;
+    border-radius: var(--border-radius-lg);
+    font-weight: 550;
+    font-size: 1rem;
+    text-decoration: none;
+    box-shadow: var(--glass-shadow);
+    transition: var(--transition-bounce);
+}
+
+.past-stories-link:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--glass-shadow-hover);
+    background: var(--glass-bg-hover);
+    color: var(--accent-blue);
+}
+
+/* Screen Transitions & Rotation */
+@keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive Rules */
+@media (max-width: 768px) {
+    .workspace-header {
+        padding: 1rem;
+    }
+    
+    .logo-title {
+        font-size: 1.4rem;
+    }
+
+    .user-badge {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    .signout-button {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    .workspace-main-content {
+        margin: 1.5rem auto;
+        gap: 1.5rem;
+    }
+
+    .flurry-steps-tracker {
+        padding: 1rem;
+    }
+
+    .step-label {
+        display: none; /* Hide labels on very narrow screens */
+    }
+
+    .step-pill.active .step-label {
+        display: inline; /* Show only active label */
+    }
+
+    .story-parchment-container {
+        padding: 1.5rem;
+    }
+
+    .drafting-card {
+        padding: 1.5rem;
+    }
 }

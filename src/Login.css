@@ -1,54 +1,166 @@
-body {
-    margin: 0;
-    padding: 0;
-    background-image: url('https://i.ibb.co/ZW84htJ/Untitled-design-4.png');
-    background-size: cover;
-    background-position: center;
+/* Winter Wonderland Login Page Styling */
+
+.login-page-wrapper {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    background: var(--bg-gradient-cozy);
+    overflow: hidden;
 }
 
-.widget {
-    height: max-content;
+.snow-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Glassmorphic Login Card */
+.login-glass-card {
+    position: relative;
+    background: var(--glass-bg);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--glass-shadow);
+    padding: 3rem 2.5rem;
+    max-width: 440px;
+    width: 90%;
+    text-align: center;
+    z-index: 10;
+    transition: var(--transition-bounce);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-glass-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--glass-shadow-hover);
+    border-color: var(--glass-border-hover);
+}
+
+.winter-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
+    animation: rotate-slow 20s linear infinite;
+}
+
+.brand-title {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 2.8rem;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.3), 0 4px 10px rgba(0, 0, 0, 0.15);
+    letter-spacing: -0.5px;
+}
+
+.brand-subtitle {
+    font-size: 1rem;
+    color: rgba(248, 250, 252, 0.85);
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+    max-width: 280px;
+    line-height: 1.4;
+}
+
+/* Google Sign-in Button Design */
+.google-signin-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--text-light);
+    border: none;
+    border-radius: var(--border-radius-md);
+    padding: 0.9rem 1.8rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: var(--transition-bounce);
+    width: 100%;
+}
+
+.google-signin-btn:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.15);
+    background: #ffffff;
+}
+
+.google-signin-btn:active {
+    transform: scale(0.98);
+}
+
+.google-icon {
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+}
+
+.google-signin-btn .btn-text {
+    color: var(--text-dark-blue);
+    font-weight: 600;
+    font-size: 1.05rem;
+    font-family: 'Outfit', sans-serif;
+}
+
+/* Loading Screens & Spinners */
+.login-loading-screen {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-bottom: 20px;
-    margin-top: 20px;
-    padding: 20px 40px;
-    border-radius: 10px;
-    overflow: hidden;
-    text-align: center;
-    max-width: 400px;
+    background: var(--bg-gradient-cozy);
+    color: var(--text-light);
+    font-family: 'Outfit', sans-serif;
 }
 
-.widget h1 {
-    color: #333;
-    font-family: "Bahnschrift";
-    font-size: 40pt;
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--text-light);
+    border-radius: 50%;
+    animation: spin 1s ease-in-out infinite;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
 }
 
-.widget h4 {
-    color: #666;
+.login-loading-screen p {
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    animation: pulse 1.5s ease-in-out infinite;
 }
 
-
-.button-large {
-    background-color: #edebe5 ;
-    color: black;
-    border: none;
-    border-radius: 20px;
-    padding: 15px 30px;
-    margin: 10px;
-    font-size: 24px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-    font-family: Bahnschrift;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+/* Animations */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
-.button-large:hover {
-    background-color: #dcd9d1;
-    color: black;
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes rotate-slow {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }

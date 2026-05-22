@@ -1,32 +1,227 @@
+/* Collaborative Story Reader Layout & Design */
 
-.global-background {
-    margin: 0;
-    padding: 0;
-    width: 1400px;
-    height: 100vh;
-    overflow: auto;
+.story-viewer-page-wrapper {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-gradient-frosty);
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-primary);
+}
+
+/* Header Alignment */
+.back-dashboard-btn {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    color: var(--text-primary);
+    padding: 0.5rem 1.25rem;
+    border-radius: var(--border-radius-lg);
+    font-weight: 550;
+    font-size: 0.95rem;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    transition: var(--transition-bounce);
+    font-family: 'Outfit', sans-serif;
+    outline: none;
+}
+
+.back-dashboard-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    background: var(--glass-bg-hover);
+    color: var(--accent-blue);
+}
+
+/* Page Content Main Container */
+.story-viewer-main-content {
+    flex: 1;
+    max-width: 800px;
+    width: 90%;
+    margin: 3rem auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Grand Parchment Paper Book View */
+.grand-story-parchment {
+    background: #fdfaf2;
+    border: 1px solid #e2d2bb;
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08), inset 0 0 50px rgba(181, 149, 101, 0.15);
+    padding: 3.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Decorative Gold Top Accent Bar */
+.grand-story-parchment::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: repeating-linear-gradient(90deg, #c5a880, #c5a880 15px, #fdfaf2 15px, #fdfaf2 30px);
+}
+
+.parchment-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.story-main-title {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 2.25rem;
+    color: #5c3e21;
+    text-align: center;
+    font-weight: 600;
+}
+
+.story-meta-contributors {
     display: flex;
     justify-content: center;
+    border-top: 1px solid rgba(133, 92, 51, 0.15);
+    border-bottom: 1px solid rgba(133, 92, 51, 0.15);
+    padding: 0.75rem 0;
+    margin-top: -1rem;
+}
+
+.story-meta-contributors span {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #a0784e;
+}
+
+/* Story Chapters Stack */
+.story-body-chapters {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.story-chapter-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.chapter-marker {
+    display: flex;
+    flex-direction: column;
+    border-left: 3px solid #c5a880;
+    padding-left: 0.8rem;
+    line-height: 1.2;
+}
+
+.chapter-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #a0784e;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.chapter-title {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.25rem;
+    color: #5c3e21;
+    font-weight: 600;
+}
+
+/* Paragraph styling */
+.story-paragraph-text {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.45rem;
+    line-height: 1.75;
+    color: #2b1f14;
+    text-align: justify;
+    text-indent: 1.5rem;
+}
+
+.story-paragraph-placeholder {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #928476;
+    font-style: italic;
+    background: rgba(197, 168, 128, 0.08);
+    border: 1px dashed rgba(197, 168, 128, 0.3);
+    padding: 1rem 1.25rem;
+    border-radius: var(--border-radius-md);
+}
+
+/* Error Dashboard layout */
+.viewer-error-container {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border-radius: var(--border-radius-lg);
+    padding: 3rem 2rem;
+    text-align: center;
+    box-shadow: var(--glass-shadow);
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    background-image: url('https://i.ibb.co/hscPnFN/Untitled-design-5.png');
-    background-position: center;
-}
-.your-story {
-    padding: 20px;
-    background-color: rgba(170, 154, 222, 0.14);
-    width: 40%;
-    height: 50vh;
-    border-radius: 8px;
-    overflow-y: auto;
+    gap: 1.25rem;
 }
 
-.your-story h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
+.error-icon {
+    font-size: 3rem;
 }
 
-.your-story p {
-    font-size: 16px;
-    margin-bottom: 10px;
-    text-align: left;
+.viewer-error-container h3 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.6rem;
+    color: var(--text-dark-blue);
+}
+
+.viewer-error-container p {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+}
+
+.error-back-btn {
+    background: var(--accent-blue);
+    color: white;
+    padding: 0.8rem 2rem;
+    border-radius: var(--border-radius-md);
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.25);
+    transition: var(--transition-smooth);
+}
+
+.error-back-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+    background: #2563eb;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .story-viewer-main-content {
+        margin: 1.5rem auto;
+    }
+
+    .grand-story-parchment {
+        padding: 2rem 1.5rem;
+    }
+
+    .story-main-title {
+        font-size: 1.75rem;
+    }
+
+    .story-paragraph-text {
+        font-size: 1.3rem;
+        line-height: 1.65;
+        text-indent: 1rem;
+    }
 }

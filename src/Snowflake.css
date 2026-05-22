@@ -1,15 +1,27 @@
 .snowflake {
-    position: absolute;
-    animation: fall 5s linear infinite;
-    width: 30px;
-    height: 30px;
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+  animation-name: fall-and-sway;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
 
-@keyframes fall {
-    from {
-        transform: translateY(-100vh);
-    }
-    to {
-        transform: translateY(100vh);
-    }
+@keyframes fall-and-sway {
+  0% {
+    transform: translateY(-20px) translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(30vh) translateX(25px) rotate(90deg);
+  }
+  50% {
+    transform: translateY(60vh) translateX(-20px) rotate(180deg);
+  }
+  75% {
+    transform: translateY(90vh) translateX(15px) rotate(270deg);
+  }
+  100% {
+    transform: translateY(110vh) translateX(0) rotate(360deg);
+  }
 }
